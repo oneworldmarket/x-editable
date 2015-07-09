@@ -135,6 +135,7 @@ module.exports = function(grunt) {
  grunt.loadNpmTasks('grunt-contrib-connect');
  grunt.loadNpmTasks('grunt-contrib-jshint');
  grunt.loadNpmTasks('grunt-contrib-copy');
+ grunt.loadNpmTasks('grunt-contrib-watch');
  //grunt.loadNpmTasks('grunt-contrib-requirejs');
 
  //version of jquery-ui datepicker to be copied into dist
@@ -273,7 +274,8 @@ module.exports = function(grunt) {
             {expand: true, flatten: true, dest: '<%= dist %>/jqueryui-editable/img/', src: 'src/img/*'},
             {expand: true, flatten: true, dest: '<%= dist %>/jquery-editable/img/', src: 'src/img/*'},
             //licences
-            {expand: true, flatten: true, dest: '<%= dist %>/', src: ['LICENSE-MIT', 'README.md', 'CHANGELOG.txt']}
+            {expand: true, flatten: true, dest: '<%= dist %>/', src: ['LICENSE-MIT', 'README.md', 'CHANGELOG.txt']},
+            //{expand: true, flatten: true, dest: '/home/dima/www/local.yutalent.co.uk/public_html/static/scripts/lib/', src: '<%= dist %>/jquery-editable/js/jquery-editable-poshytip.min.js'}
             ]
         },
         inputs_ext: {
@@ -293,7 +295,13 @@ module.exports = function(grunt) {
             ],
             dest:'<%= dist %>/jquery-editable/jquery-ui-datepicker/'
        }         
-    }
+    },
+      watch: {
+          scripts: {
+              files: ['src/**/*'],
+              tasks: 'watch-js'
+          },
+      },
   });
 
   //test task
@@ -310,13 +318,15 @@ module.exports = function(grunt) {
   grunt.registerTask('testover', ['jshint', 'connect', 'qunit:testover']);  
   
   // Default task.
-  grunt.registerTask('default', ['clean', 'jshint', 'concat', 'uglify', 'copy']);
+  grunt.registerTask('default', ['clean', 'concat', 'uglify', 'copy', 'watch']);
   
   // alive server
   grunt.registerTask('server', 'connect:server:keepalive');
   
   // build
   grunt.registerTask('build', ['clean', 'jshint', 'concat', 'uglify', 'copy']);
+
+  grunt.registerTask('watch-js', ['clean', 'concat', 'uglify', 'copy']);
   
  //to run particular task use ":", e.g. copy:libs 
 };

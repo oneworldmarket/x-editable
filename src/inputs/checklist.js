@@ -46,11 +46,19 @@ $(function(){
                                      }))
                                      .append($('<span>').text(' '+this.sourceData[i].text));
                 
-                $('<div>').append($label).appendTo(this.$tpl);
+                $('<div class="editable-checklist-option">').append($label).appendTo(this.$tpl);
             }
             
             this.$input = this.$tpl.find('input[type="checkbox"]');
             this.setClass();
+
+            if (this.options.enablesearch) {
+                var searchHTML = $('<div class="editable-search">').append('<input type="text" placeholder="Search"/>');
+                var input = searchHTML.find('input');
+                searchHTML.prependTo(this.$tpl);
+                //customFilter from yutalent
+                input.customFilter(this.$tpl.find('.editable-checklist-option'));
+            }
         },
        
        value2str: function(value) {
@@ -148,7 +156,9 @@ $(function(){
         @type string
         @default ','
         **/         
-        separator: ','
+        separator: ',',
+
+        enablesearch: false
     });
 
     $.fn.editabletypes.checklist = Checklist;      
